@@ -12,7 +12,8 @@ class EventsController extends Controller
     }
         
     public function show(Events $event){
-        $events = Events::fill($event);
+        $events = Events::with('participants')->find($event);
+        dd($events);
         return response()->json($events);
     }
 

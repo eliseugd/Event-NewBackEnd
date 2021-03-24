@@ -12,7 +12,7 @@ class UserEvent extends Controller
     }
         
     public function show(UserEvent $userEvent){
-        $userEvent = UserEvent::fill($userEvent);
+        $userEvent = UserEvent::find($userEvent);
         return response()->json($userEvent);
     }
 
@@ -26,7 +26,10 @@ class UserEvent extends Controller
             'status' => request('status')
         ];
 
-        UserEvent::create($data);
+        $userEvent = UserEvent::create($data);
+
+        $user = $userEvent->user;
+        $user->notify();
     }
 
     public function edit(UserEvent $userEvent){
@@ -43,6 +46,10 @@ class UserEvent extends Controller
     }
 
     public function destroy(UserEvent $userEvent){
+        $user = $userEvent->user;
+
+        $user->notify();
+
         $userEvent->delete();
     }
 }
